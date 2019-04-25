@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {PropTypes} from 'prop-types';
+import FormComponent from '../containers/Form';
+import Message from '../components/Message';
 
 class Form extends Component {
     constructor(props) {
@@ -9,28 +11,50 @@ class Form extends Component {
             isNameValid: false,
             isPhoneValid: false,
             isUrlValid: false,
+            email: '',
+            name: '',
+            phone: '',
+            url: '',
         };
 
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange = (event) => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
+    } 
+
+    onClick = (event) =>{
+        event.preventDefault();
+        this.validateEmail(this.state.email) && this.setState({isEmailValid: true})
+
+        const { 
+            isEmailValid, 
+            isNameValid, 
+            isUrlValid, 
+            isPhoneValid ,
+            phone,
+            email,
+            url,
+            name,
+        } = this.state;
+        isEmailValid && isNameValid && isUrlValid && isPhoneValid && <Message />
+    }
+
+    validateEmail(email) {
+        var filter = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+        return String(email).search (filter) != -1;
     }
     
     render() {
         return (
-            <div className="row">
-            <h1 className="text-center">Form Validation</h1>
-            <form>
-                <h3>Name:
-                </h3>
-                <h3>Email:
-                </h3>
-                <h3>Phone:
-                </h3>
-                <h3>Blog URL:
-                </h3>
-                <div className="small-6 small-centered text-center columns">
-                    <a href="#" className="button success expand round text-center">Verify</a>
-                </div>
-            </form>
-        </div>);
+            <FormComponent 
+                state={this.state}
+                onChange = {this.onChange}
+            />
+        );
     }
 }
 
