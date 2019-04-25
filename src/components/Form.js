@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
 import FormComponent from '../containers/Form';
-import Message from '../components/Message';
 
 class Form extends Component {
     constructor(props) {
@@ -19,6 +17,7 @@ class Form extends Component {
         };
 
         this.onChange = this.onChange.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     onChange = (event) => {
@@ -29,39 +28,68 @@ class Form extends Component {
             phone,
             email,
             url,
-            name,
         } = this.state;
-        this.validateEmail(email) && this.setState({isEmailValid: true});
+        this.validateEmail(email) &&  this.setState({isEmailValid: true});
+            
+        this.validatePhone(phone) && this.setState({isPhoneValid: true});
 
+        this.validateUrl(url) && this.setState({isUrlValid: true});
+        
+        this.validateName(this.state.name) && this.setState({isNameValid: true});
+            
     } 
 
-    onClick = (event) =>{
-        event.preventDefault();
+    showForm = () => {
+        return(
+            <div>
+                {console.log(this.state)}
+                <FormComponent
+                    state={this.state}
+                    onChange = {this.onChange}
+                    onClick = {this.onClick}
+                />
+            </div>
+            
+        );
+    }
+
+    onClick = () => {
         const { 
             isEmailValid, 
-            isNameValid, 
-            isUrlValid, 
-            isPhoneValid ,
-            phone,
-            email,
-            url,
-            name,
-        } = this.state;
-        isEmailValid && isNameValid && isUrlValid && 
-        isPhoneValid && this.setState({showMessage: true})
+            isPhoneValid,
+            isNameValid,
+            isUrlValid } = this.state;
+        isEmailValid && isPhoneValid && 
+        isNameValid && isUrlValid &&
+        this.setState({showMessage: true},
+        () => {this.showForm()});
     }
 
     validateEmail(email) {
-        var filter = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+        const filter = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
         return String(email).search (filter) != -1;
+    }
+
+    validateName = (name) => {
+        const filter = /^[a-zA-Z]{5,30}$/;
+        return String(name).search (filter) != -1;
+    }
+
+    validateUrl = (url) => {
+        const filter = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+        return String(url).search (filter) != -1;
+    }
+
+    validatePhone = (phone) => {
+        var filter = /^[2-9][0-9]\d{8}$/;
+        return String(phone).search (filter) != -1;
     }
     
     render() {
         return (
-            <FormComponent 
-                state={this.state}
-                onChange = {this.onChange}
-            />
+            <div>
+             {this.showForm()}
+            </div> 
         );
     }
 }

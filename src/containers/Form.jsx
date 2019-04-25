@@ -1,13 +1,15 @@
 import React from 'react';
 import Message from '../components/Message';
+import { PropTypes } from 'prop-types';
 
  const Form = (props) => {
     const { 
         onChange,
-        showMessage, 
-        state: { name, email, phone, url },
+        onClick, 
+        state: { name, email, phone, url, showMessage },
     } = props;
   return (
+    <React.Fragment>
     <div className="row">
             <h1 className="text-center">Form Validation</h1>
             <form>
@@ -43,12 +45,20 @@ import Message from '../components/Message';
                     value={url} 
                     onChange={onChange}>
                 </input>
-                <div className="small-6 small-centered text-center columns">
+                <div className="small-6 small-centered text-center columns" onClick={onClick}>
                     <a href="#" className="button success expand round text-center">Verify</a>
                 </div>
             </form>
-            {showMessage && <Message/>}
+            
         </div>
+        {showMessage && <Message/>}
+        </React.Fragment>
   )
+}
+
+Form.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
+    state: PropTypes.object,
 }
 export default Form;
