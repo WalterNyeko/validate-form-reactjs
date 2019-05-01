@@ -19,6 +19,7 @@ import { PropTypes } from 'prop-types';
                     type="text" 
                     name="name" 
                     value={name} 
+                    className="name"
                     onChange={onChange}>
                 </input>
                 <h3>Email:
@@ -27,6 +28,7 @@ import { PropTypes } from 'prop-types';
                     type="text" 
                     name="email" 
                     value={email} 
+                    className="email"
                     onChange={onChange}>
                 </input>
                 <h3>Phone:
@@ -35,6 +37,7 @@ import { PropTypes } from 'prop-types';
                     type="text" 
                     name="phone" 
                     value={phone} 
+                    className="phone"
                     onChange={onChange}>
                 </input>
                 <h3>Blog URL:
@@ -43,10 +46,11 @@ import { PropTypes } from 'prop-types';
                     type="text" 
                     name="url"
                     value={url} 
+                    className="url"
                     onChange={onChange}>
                 </input>
                 <div className="small-6 small-centered text-center columns" onClick={onClick}>
-                    <a href="#" className="button success expand round text-center">Verify</a>
+                    <a href="/" className="button success expand round text-center">Verify</a>
                 </div>
             </form>
             

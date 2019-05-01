@@ -21,35 +21,40 @@ class Form extends Component {
     }
 
     onChange = (event) => {
+
         event.preventDefault();
         const { name, value } = event.target;
         this.setState({ [name]: value });
-        const {
-            phone,
-            email,
-            url,
-        } = this.state;
-        this.validateEmail(email) &&  this.setState({isEmailValid: true});
-            
-        this.validatePhone(phone) && this.setState({isPhoneValid: true});
+        const { phone, email, url } = this.state;
 
-        this.validateUrl(url) && this.setState({isUrlValid: true});
+        const emailRegex = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+        const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+        const nameRegex = /^[a-zA-Z]{5,30}$/;
+        const phoneRegex = /^[2-9][0-9]\d{8}$/;
+
+        this.validateInput(email, emailRegex) ? this.setState({isEmailValid: true}): 
+        this.setState({isEmailValid: false});
+            
+        this.validateInput(phone, phoneRegex) ? this.setState({isPhoneValid: true}): 
+        this.setState({isPhoneValid: false});
+
+        this.validateInput(url, urlRegex) ? this.setState({isUrlValid: true}): 
+        this.setState({isUrlValid: false});
         
-        this.validateName(this.state.name) && this.setState({isNameValid: true});
+        this.validateInput(this.state.name, nameRegex) ? this.setState({isNameValid: true}): 
+        this.setState({isNameValid: false});
             
     } 
 
     showForm = () => {
         return(
-            <div>
-                {console.log(this.state)}
+            <React.Fragment>
                 <FormComponent
-                    state={this.state}
+                    state = {this.state}
                     onChange = {this.onChange}
                     onClick = {this.onClick}
                 />
-            </div>
-            
+            </React.Fragment>
         );
     }
 
@@ -65,26 +70,10 @@ class Form extends Component {
         () => {this.showForm()});
     }
 
-    validateEmail(email) {
-        const filter = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
-        return String(email).search (filter) != -1;
+    validateInput = (input, regex) =>{
+        return String(input).search (regex) !== -1;
     }
 
-    validateName = (name) => {
-        const filter = /^[a-zA-Z]{5,30}$/;
-        return String(name).search (filter) != -1;
-    }
-
-    validateUrl = (url) => {
-        const filter = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-        return String(url).search (filter) != -1;
-    }
-
-    validatePhone = (phone) => {
-        var filter = /^[2-9][0-9]\d{8}$/;
-        return String(phone).search (filter) != -1;
-    }
-    
     render() {
         return (
             <div>

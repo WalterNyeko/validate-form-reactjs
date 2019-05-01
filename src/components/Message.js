@@ -4,7 +4,7 @@ const Message = () => {
     return (
         <div>
             <h3 className="text-center message">
-                Form is Complete
+                Form is Complete!
             </h3>
         </div>
     )
